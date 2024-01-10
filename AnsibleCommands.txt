@@ -1,0 +1,92 @@
+ANSIBLE CAMMONDS:
+master node:
+-------------------
+sudo amazon-linux-extras install ansible2 -y
+
+vi /etc/ansible/hosts
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+[demo]
+172.31.9.104
+172.31.4.68
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+vi /etc/ansible/ansible.cfg
+
+inventory      = /etc/ansible/hosts
+sudo_user      = root
+
+all nodes :
+
+[root@master ~]# useradd ansible
+[root@master ~]# passwd ansible
+
+root: $visudo
+
+ansible ALL=(ALL) NOPASSWD: ALL
+
+in all nodes:
+
+[root@master ~]# vi /etc/ssh/sshd_config
+
+PermitRootLogin yes
+PasswordAuthentication yes
+
+[root@master ~]# service sshd restart
+
+Password configurations:
+=========================================
+     ansible demo -m ping
+
+AD-HOC commands:
+     ansible demo -a "pwd"
+     ansible demo -a "ls -a"
+     ansible demo -a "uptime"
+     ansible demo -a "touch sample.conf"
+     ansible demo -a "ls"
+     ansible demo -a "rm -rf sample.conf"
+     ansible demo -a "ls"
+     ansible demo -a "yum install httpd -y"
+     ansible demo -a "sudo yum install httpd -y"
+     ansible demo -a "which httpd"
+     ansible demo -a "sudo which httpd"
+     ansible demo -a "systemctl status httpd"
+     ansible demo -a "sudo systemctl status httpd"
+     ansible demo -a "sudo yum remove  httpd -y"
+     ansible demo -b -a "which httpd"\
+     ansible demo -b -a "which httpd"
+     ansible demo -b -a "yum install httpd -y"
+
+Module Commands:
+=====================================================
+      ansible demo -m ping
+      ansible demo -m "uptime"
+      ansible demo -m shell -a "uptime"
+      ansible demo -m command -a "ls -a"
+      ansible demo -b -m yum -a "pkg=httpd state=present"
+      ansible demo -b -a "which httpd"
+      ansible demo -b -m shell -a "systemctl status httpd"
+      ansible demo -b -m service -a "name=httpd state=started"
+     ansible demo -b -m shell -a "systemctl status httpd"
+     ansible demo -b -m service -a "name=httpd state=stop"
+     ansible demo -b -m yum -a "pkg=httpd state=absent"
+     ansible demo -b -m user -a "name=mal state=present"
+     ansible demo -b -a "cat /etc/passwd"
+     ansible demo -b -m user -a "name=mal state=absent"
+     ansible demo -b -m group -a "name=DevOps state=present"
+     ansible demo -b -a "cat /etc/group"
+     ansible demo -b -m group -a "name=DevOps state=absent"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory mod=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent mode=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory mode=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent mode=0755"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=touch"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=absent"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=touch mode=0755"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=absent mode=0755"
+     ansible demo -b -m copy -a "src=/home/ansible/jsp.txt dest=/home/ansible"
