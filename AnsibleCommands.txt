@@ -90,3 +90,137 @@ Module Commands:
      ansible demo -m file -a "path=/home/ansible/jsp.txt state=touch mode=0755"
      ansible demo -m file -a "path=/home/ansible/jsp.txt state=absent mode=0755"
      ansible demo -b -m copy -a "src=/home/ansible/jsp.txt dest=/home/ansible"
+================================================================================
+
+Ansible Playbook commands
+ssh 172.31.32.32
+    2  service restart sshd
+    3  ssh 172.31.32.32
+    4  cd
+    5  cd ..
+    6  exit
+    7  ssh 172.31.32.32
+    8  exit
+    9  ssh 172.31.32.32
+   10  vi target.yml
+   11  cat target.yml
+   12  ansible-playbook target.yml --check
+   13  ansible-playbook target.yml
+   14  exit
+   15  vi task.yml
+   16  cat task.yml
+   17  ansible-playbook task.yml --check
+   18  ansible-playbook task.yml --check
+   19  ansible demo -m ping
+   20  ssh 172.31.32.32
+   21  ssh-keygen
+   22  cd .ssh/
+   23  ssh-copy-id ansible@172.31.32.32
+   24  cd
+   25  ansible demo -m ping
+   26  ansible-playbook task.yml --check
+   27  ls
+   28  cat task.yml
+   29  ansible-playbook target.yml
+   30  vi task.yml
+   31  ansible-playbook task.yml --check
+   32  vi var.yml
+   33  ansible-playbook var.yml --check
+   34  vi var2.yml
+   35  ansible-playbook var2.yml --check
+   36  ansible-playbook var2.yml
+   37  vi handler.yml
+   38  ansible-palybook handler.yml --check
+   39  ansible-palybook handler.yml
+   40  ansible-playbook handler.yml --check
+   41  ansible-playbook handler.yml
+   42  vi loop.yml
+   43  ansible-playbook loop.yml --check
+   44  vi when.yml
+   45  ansible-playbook when.yml --check
+   46  ansible-playbook when.yml
+   47  ansible-vault encrypt when.yml
+   48  cat when.yml
+   49  ansible-vault view when.yml
+   50  ansible-playbook edit when.yml
+   51  ansible-vault edit when.yml
+   52  ansible-vault decrypt when.yml
+   53  cat when.yml
+
+vi target.yml
+
+
+---
+- name: for target check
+  hosts: demo
+  user: ansible
+  become: true
+  connection: ssh
+
+=================
+vi tasks
+
+---
+- name: install httpd
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: install httpd in linux server
+      command: yum install httpd -y
+    - name: start service
+      command: systemctl start httpd
+=======================================
+
+vi var.yml
+
+---
+- name: install httpd
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  vars:
+    httpd_package_name: httpd
+    httpd_package_state: present
+  tasks:
+    - name: install httpd package
+      yum:
+        name: "{{ httpd_package_name }}"
+        state: "{{ httpd_package_state }}"
+==============================================
+
+vi var2.yml
+
+--- #My Playbook
+- name: to create users
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: add list of users in my nodes
+      user: name= '{{ item }}' state=present
+      with_items:
+        - superman
+        - batman
+        - ironman
+        - spiderman
+=============================================
+
+vi when.yml
+
+--- #My conditional playbook apt-get=debian yum=RedHat
+- name: install httpd in server
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: install apache server for debian family
+      command: apt-get -y install apache2
+      when: ansible_os_family == "Debian"
+    - name: install apache server for RedHat family
+      command: yum -y install httpd
+      when: ansible_os_family == "RedHat"
