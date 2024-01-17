@@ -1,0 +1,256 @@
+ //DOCKER VI EDITOR MODE COMMANDS
+=================================
+sudo yum update -y
+sudo yum search docker
+sudo yum info docker
+sudo yum install -y docker
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+sudo systemctl status docker.service
+docker --version
+sudo yum install git -y
+sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+
+#!/bin/bash
+sudo su -
+
+
+//CREATING TEMPLATE USING AUTOSCALLING 
+=====================================
+FOR ADVANCED SETTINGS
+#!/bin/bash                                                                                                                      
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+EC2AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+echo '<center><h1>This Amazon EC2 instance is located in this Availability Zone: AZID </h1></center>' > /var/www/html/index.txt
+sed "s/AZID/$EC2AZ/" /var/www/html/index.txt > /var/www/html/index.html
+
+IN CASE OF DOCKER INSTALLATION THROUGH AUTOSCALLING WITH PORT NUMBER
+====================================================================
+#!/bin/bash
+yum update -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd
+sudo yum install docker -y
+systemctl start docker
+systemctl enable docker
+docker pull httpd
+docker run -it -d -p 8000:80 httpd
+
+
+//TO CREATE CUSTOMISED DOCKER IMAGE
+===================================
+FROM amazonlinux
+MAINTAINER "bathalamalathi@gmail.com"
+RUN yum update -y
+RUN yum install -y wget
+RUN yum install -y tar
+RUN yum install -y gzip
+RUN wget  https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.83/bin/apache-tomcat-9.0.83.tar.gz
+RUN tar -zxvf apache-tomcat-9.0.83.tar.gz
+RUN yum install -y java
+RUN sh apache-tomcat-9.0.83/bin/startup.sh
+
+
+
+dokcer commands
+task 1&2
+docker pull httpd
+docker run -it -d httpd
+docker commit id malathibathala/reponame
+dokcer push malathibathala/reponame
+
+task3
+
+ docker pull nginx
+  dokcer run -it -d -p 8000:80 nginx
+  docker run -it -d -p 8000:80 nginx
+
+task4
+
+docker pull amozonlinux
+dokcer run -it -d amozonlinux
+docker exec -it id /bin/bash
+wget apachelink
+yum wget install -y
+yum tar install -y
+yum gzip install -y
+tar -zxvf apachefilename
+cd apache link
+cd bin/
+sh startup.sh
+yum java nstall -y
+java --version
+
+task5
+mkdir Docker
+cd dockerfile/
+vi dockerfile.sh
+paste the code of Run commands
+docker build it malathibathala/repo Dockerfile/
+docker run -it -d -p mala/repo
+docker exec -it id /bin/bash
+cd filename
+cd bin/
+sh startup.sh
+
+docker-compose ---task6
+vi docker-compose.yml
+paste the code 
+version: '3'
+services:
+  web:
+    image: nginx
+    ports:
+    - 4000:80
+  db:
+    image: redis
+docker-compose up -d
+
+task7--docker volume
+
+docker pull httpd
+docker run -it -d httpd
+docker exec -it id /bin/bash
+docker create volume vl-name
+docker run -it -d -v vl-name:/user/local/apache2/htdocs -p 8000:80 httpd
+docker exec -it id /bin/bash
+ls
+cat index.html
+sudo su -
+cd /var/lib/docker/volumes
+cd vl-name/
+cd _data/
+ls
+cat index.html
+
+
+
+#!/bin/bash
+sum()
+{
+        a=10
+        b=20
+        c=$((a+b))
+        echo "sum of a,b is :$c"
+}
+sum
+
+
+ANSIBLE::::
+
+master public ip --> 65.2.6.48
+private ip --> 172.31.2.66
+
+slave 1 --> 43.204.221.80
+private ip --> 172.31.9.104
+
+
+slave 2 --> 13.127.35.210
+private ip --> 172.31.4.68
+
+
+
+master public ip --> 65.2.6.48
+private ip --> 172.31.2.66
+
+slave 1 --> 43.204.221.80
+private ip --> 172.31.9.104
+
+slave 2 --> 13.127.35.210
+private ip --> 172.31.4.68
+
+master node:
+-------------------
+sudo amazon-linux-extras install ansible2 -y
+
+vi /etc/ansible/hosts
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+[demo]
+172.31.9.104
+172.31.4.68
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+vi /etc/ansible/ansible.cfg
+
+inventory      = /etc/ansible/hosts
+sudo_user      = root
+
+all nodes :
+
+[root@master ~]# useradd ansible
+[root@master ~]# passwd ansible
+
+root: $visudo
+
+ansible ALL=(ALL) NOPASSWD: ALL
+
+in all nodes:
+
+[root@master ~]# vi /etc/ssh/sshd_config
+
+PermitRootLogin yes
+PasswordAuthentication yes
+
+[root@master ~]# service sshd restart
+
+
+=========================================
+     ansible demo -m ping
+     ansible demo -a "pwd"
+     ansible demo -a "ls -a"
+     ansible demo -a "uptime"
+     ansible demo -a "touch sample.conf"
+     ansible demo -a "ls"
+     ansible demo -a "rm -rf sample.conf"
+     ansible demo -a "ls"
+     ansible demo -a "yum install httpd -y"
+     ansible demo -a "sudo yum install httpd -y"
+     ansible demo -a "which httpd"
+     ansible demo -a "sudo which httpd"
+     ansible demo -a "systemctl status httpd"
+     ansible demo -a "sudo systemctl status httpd"
+     ansible demo -a "sudo yum remove  httpd -y"
+     ansible demo -b -a "which httpd"\
+     ansible demo -b -a "which httpd"
+     ansible demo -b -a "yum install httpd -y"
+
+     ansible demo -m ping
+      ansible demo -m "uptime"
+      ansible demo -m shell -a "uptime"
+      ansible demo -m command -a "ls -a"
+      ansible demo -b -m yum -a "pkg=httpd state=present"
+      ansible demo -b -a "which httpd"
+      ansible demo -b -m shell -a "systemctl status httpd"
+      ansible demo -b -m service -a "name=httpd state=started"
+     ansible demo -b -m shell -a "systemctl status httpd"
+     ansible demo -b -m service -a "name=httpd state=stop"
+     ansible demo -b -m yum -a "pkg=httpd state=absent"
+     ansible demo -b -m user -a "name=mal state=present"
+     ansible demo -b -a "cat /etc/passwd"
+     ansible demo -b -m user -a "name=mal state=absent"
+     ansible demo -b -m group -a "name=DevOps state=present"
+     ansible demo -b -a "cat /etc/group"
+     ansible demo -b -m group -a "name=DevOps state=absent"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory mod=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent mode=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=directory mode=0755"
+     ansible demo -b -m file -a "path=/home/ansible/demo state=absent mode=0755"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=touch"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=absent"
+     ansible demo -m file -a "path=/home/ansible/jsp.txt state=touch mode=0755"
+    ansible demo -m file -a "path=/home/ansible/jsp.txt state=absent mode=0755"
+     ansible demo -b -m copy -a "src=/home/ansible/jsp.txt dest=/home/ansible"
+

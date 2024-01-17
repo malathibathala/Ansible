@@ -1,0 +1,59 @@
+MAVEN COMMANDS:
+===============
+  clear
+    2  wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+    3  ls -a
+    4  tar -zxvf apache-maven-3.9.6-bin.tar.gz
+    5  ls -a
+    6  mv apache-maven-3.9.6 Maven
+    7  ls
+    8  cd Maven/
+    9  ls -a
+   10  cd bin/
+   11  ls -a
+   12  pwd
+   13  cd ..
+   14  ls
+   15  ls -a
+   16  cd ..
+   17  ls -a
+   18  vi .bashrc
+   19  mvn --version
+   20  source .bashrc
+   21  mvn --version
+   22  sudo yum install java-11* -y
+   23  mvn archetype:generate
+   24  mvn validate
+   25  ls
+   26  cd test/
+   27  mvn validate
+   28  mvn clean
+   29  mvn test
+   30  ls -a
+   31  cd target/
+   32  ls -a
+   33  cd ..
+   34  mvn packages
+   35  mvn package
+   36  mvn verify
+   37  mvn install
+   38  cd ..
+   39  ls
+   40  ls -a
+   41  cd .m2
+   42  ls -a
+   43  cd repository/
+   44  ls -a
+   45  cd jsp/
+   46  ls -a
+   47  cd test/
+   48  ls -a
+   49  cd ..
+   50  cd ../..
+   51  cd test/
+   52  mvn site
+   53  ls -a
+   54  cd target/
+   55  ls -a
+   56  cd site/
+   57  ls -a
