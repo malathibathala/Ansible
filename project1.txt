@@ -1,0 +1,141 @@
+Project1:
+vi tomcat-user.xml
+
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+<user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+
+
+===========================================================================================================
+
+
+Project-2 Script
+
+# copywarfile.yml
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: copy jar/war on to tomcat server
+      copy:
+        src: /home/ansible/cicd-for-webapp.war
+        dest: /root/apache-tomcat-9.0.76/webapps
+
+Project-3 Script
+======================================================
+su - dockeradmin
+vi Dockerfile
+
+# Pull base image
+FROM tomcat:9-jre9
+
+# Maintainer
+MAINTAINER "bathalamalathi@gmail.com"
+
+# copy war file on to container
+COPY ./flowers.war /usr/local/tomcat/webapps
+
+
+docker stop qspider;
+docker rm -f qspider;
+docker image rm -f qspider;
+cd /home/dockeradmin;
+docker build -f qspider .
+
+docker run -it -d --name qspider -p 8090:8080 qspider
+
+project 4:
+==========================================================
+vi Dockerfile
+
+# Pull base image
+FROM tomcat:9-jre9
+
+# Maintainer
+MAINTAINER "bathalamalathi@gmail.com"
+
+# copy war file on to container
+COPY ./flowers.war /usr/local/tomcat/webapps
+
+cd /home/ansible/
+docker build -t malathibathala/qspider .
+docker push malathibathala/qspider
+docker rmi malathibathala/qspider
+
+
+vi play.yml
+
+---
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: run container
+      command: docker run -it -d --name qspider -p 8090:8080 malathibathala/qspider
+
+
+project-5
+=============================================================
+vi play.yml
+
+---
+- name: Run the container
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: stop container
+      command: docker stop qspider
+    - name: remove container
+      command: docker rm -f qspider
+    - name: remove image
+      command: docker image rm -f malathibathala/qspider
+    - name: Docker run container
+      command: docker run -it -d --name qspider -p 8090:8080 malathibathala/qspider:latest
+
+vi Dockerfile
+
+# Pull base image
+FROM tomcat:9-jre9
+
+# Maintainer
+MAINTAINER "bathalamalathi@gmail.com"
+
+# copy war file on to container
+COPY ./flowers.war /usr/local/tomcat/webapps
+
+Dockerfile commands in jenkins
+--------------------------------
+cd /home/ansible
+docker build -t $JOB_NAME:v1.$BUILD_ID .
+docker tag $JOB_NAME:v1.$BUILD_ID malathibathala/$JOB_NAME:v1.$BUILD_ID
+docker tag $JOB_NAME:v1.$BUILD_ID malathibathala/$JOB_NAME:latest
+docker push malathibathala/$JOB_NAME:v1.$BUILD_ID
+docker push malathibathala/$JOB_NAME:latest
+docker rmi $JOB_NAME:v1.$BUILD_ID malathibathala/$JOB_NAME:v1.$BUILD_ID malathibathala/$JOB_NAME:latest
+docker pull malathibathala/$JOB_NAME:v1.$BUILD_ID
+docker pull malathibathala/$JOB_NAME:latest
+
+spring project:
+
+app_server:
+---------------------------------------------
+sudo yum update -y
+sudo yum instrall java-17* -y
+wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+tar -zxvf apache-maven-3.9.6-bin.tar.gz
+mv apache-maven-3.9.6-bin Maven
+vi .bashrc --> export PATH=/root/Maven/bin:$PATH --> source .bashrc
+mvn --version
+sudo yum install git -y
+
+db_server:
+----------------------------------------------
+sudo yum update -y
+sudo yum install mysql -y
+mysql -h database-1.cjcsa2ee8brv.ap-south-1.rds.amazonaws.com -P 3306 -u admin -p
+

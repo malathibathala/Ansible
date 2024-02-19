@@ -57,3 +57,17 @@ MAVEN COMMANDS:
    55  ls -a
    56  cd site/
    57  ls -a
+
+JENKINS INSTALLATION:
+====================
+    1  vi jen.sh   paste the code from redhat
+    2  sh jen.sh
+    3  jenkins --version
+    4  sudo yum install java-11* -y
+    5  jenkins --version
+    6  systemctl status jenkins
+    7  systemctl start jenkins
+    8  cat /var/lib/jenkins/secrets/initialAdminPassword
+
+    9  aws s3 cp jenbackup.tar.gz s3://bcbct/jenbackup.tar.gz    --->copy the file from to s3
+
